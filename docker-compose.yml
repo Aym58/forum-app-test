@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    environment:
+      - PORT=3000
+      - DEV_DB_URI=postgres://histcqwn:m8HEixQeeAxwu402G75y7R2Op9Ot-zge@mouse.db.elephantsql.com/histcqwn
+      - DB_PORT=5432
+      - DB_USER=postgres
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    links:
+      - postgres:postgres
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+
+  postgres:
+    image: postgres:alpine
+    restart: always
+    environment:
+      - DB_USER=postgres
+      - DB_PASS=m_fgxSSLlVaWCAAqJSMTjT0kI_p7gVF8
+      - DEV_DB_URI=postgres://histcqwn:m8HEixQeeAxwu402G75y7R2Op9Ot-zge@mouse.db.elephantsql.com/histcqwn
