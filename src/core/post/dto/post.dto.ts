@@ -39,8 +39,6 @@ export class CreatePostDto {
   @ApiProperty({ example: 10, description: 'Id of commented post' })
   parentId?: number;
 
-  @IsNotEmpty()
-  @IsString()
   @ApiProperty({
     description: 'Recaptcha token',
   })

@@ -24,6 +24,13 @@ export class PostService {
   async createPost(createPostDto: CreatePostDto): Promise<PostEntity> {
     const { name, email, text, parentId, homePage } = createPostDto;
 
+    const regex =
+      /^(?:[^<]+|<([ai]|code|strong)(\s[a-z]+="[^"]*")*\s*(?:\/>|>[^<>]*<\/\1>))*$/g;
+
+    if (!regex.test(text)) {
+      throw new BadRequestException('Tags error');
+    }
+
     const existingUser = await this.userService.getUserByEmail(email);
     const user =
       existingUser || (await this.userService.createUser({ name, email }));
