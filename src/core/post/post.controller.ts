@@ -24,6 +24,8 @@ import { CreatePostDto, GetPostDto } from './dto/post.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { PostGuard } from './guard/post.guard';
 import { RecaptchaGuard } from './guard/recaptcha.guard';
+import { OrderValues, SortValues } from '../common/enum/sort.enum';
+import { SortingDto } from '../common/dto/sorting.dto copy';
 
 @ApiTags('Post')
 @Controller('post')
@@ -48,9 +50,12 @@ export class PostController {
     type: [GetPostDto],
   })
   async getPostList(
-    @Query() { page = 1, limit = 25 }: PaginationDto,
+    @Query()
+    { page = 1, limit = 25 }: PaginationDto,
+    @Query()
+    { sort = SortValues.DATE, order = OrderValues.DESC }: SortingDto,
   ): Promise<PostEntity[]> {
-    return this.postService.getPostList({ page, limit });
+    return this.postService.getPostList({ page, limit }, { sort, order });
   }
 
   @Get([':id'])
@@ -61,7 +66,8 @@ export class PostController {
   })
   async getReplies(
     @GetPost() post: PostEntity,
-    @Query() { page = 1, limit = 25 }: PaginationDto,
+    @Query()
+    { page = 1, limit = 25 }: PaginationDto,
   ): Promise<PostEntity[]> {
     return this.postService.getReplies(post, { page, limit });
   }

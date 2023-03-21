@@ -4,12 +4,14 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 import { PostEntity } from './post.entity';
 import { CreatePostDto } from './dto/post.dto';
 import { UserService } from '../user/user.service';
 import { PaginationDto } from '../common/dto/pagination.dto';
-import { Repository } from 'typeorm';
+import { SortingDto } from '../common/dto/sorting.dto copy';
+import { SortValues } from '../common/enum/sort.enum';
 
 @Injectable()
 export class PostService {
@@ -50,16 +52,25 @@ export class PostService {
     return post;
   }
 
-  async getPostList(pagination: PaginationDto): Promise<PostEntity[]> {
+  async getPostList(
+    pagination: PaginationDto,
+    sorting: SortingDto,
+  ): Promise<PostEntity[]> {
+    console.log(sorting);
     try {
       const { page, limit } = pagination;
       const take = limit;
       const skip = (page - 1) * limit;
 
+      const { sort, order } = sorting;
+
       const postList = await this.postRepository
         .createQueryBuilder('post')
         .leftJoin('post.user', 'user')
-        .addOrderBy('post.createdAt', 'DESC')
+        .addOrderBy(
+          sort === SortValues.DATE ? 'post.createdAt' : `user.${sort}`,
+          order,
+        )
         .where('post.parentId IS NULL')
         .skip(skip)
         .take(take)
