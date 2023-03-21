@@ -23,6 +23,7 @@ import { GetPost } from './decorator/post.decorator';
 import { CreatePostDto, GetPostDto } from './dto/post.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { PostGuard } from './guard/post.guard';
+import { RecaptchaGuard } from './guard/recaptcha.guard';
 
 @ApiTags('Post')
 @Controller('post')
@@ -31,6 +32,7 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Post()
+  @UseGuards(RecaptchaGuard)
   @ApiCreatedResponse({
     description: 'Post created',
   })

@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger/dist';
 
-import { IsNotEmpty, IsEmail, IsString, IsUrl } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsEmail,
+  IsString,
+  IsUrl,
+  IsOptional,
+} from 'class-validator';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -22,6 +28,7 @@ export class CreatePostDto {
   })
   text: string;
 
+  @IsOptional()
   @IsUrl()
   @ApiProperty({
     example: 'http://ru.wikipedia.org/',
@@ -31,6 +38,13 @@ export class CreatePostDto {
 
   @ApiProperty({ example: 10, description: 'Id of commented post' })
   parentId?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    description: 'Recaptcha token',
+  })
+  recaptchaValue: string;
 }
 
 export class GetPostDto {
