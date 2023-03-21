@@ -10,13 +10,24 @@ import {
 
 import { UserEntity } from '../user/user.entity';
 
-@Entity({ name: 'Post' })
+@Entity({ name: 'post' })
 export class PostEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   text: string;
+
+  @Column({ nullable: true })
+  homePage: string;
+
+  @Column({
+    nullable: true,
+  })
+  parentId: number;
+
+  @Column('int', { array: true, nullable: true })
+  replyIds: number[];
 
   @CreateDateColumn({
     type: 'timestamp',

@@ -20,7 +20,7 @@ export class UserGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const { params } = request;
 
-    const userId = params.userId;
+    const userId = params.id;
 
     if (!userId) {
       throw new BadRequestException('User Guard Error');
@@ -28,7 +28,6 @@ export class UserGuard implements CanActivate {
 
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['user', 'post'],
     });
 
     if (!user) {

@@ -7,6 +7,7 @@ import {
   ValidationPipe,
   UseFilters,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -21,6 +22,7 @@ import { PostService } from './post.service';
 import { GetPost } from './decorator/post.decorator';
 import { CreatePostDto, GetPostDto } from './dto/post.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
+import { PostGuard } from './guard/post.guard';
 
 @ApiTags('Post')
 @Controller('post')
@@ -43,16 +45,30 @@ export class PostController {
     description: 'Get all Posts',
     type: [GetPostDto],
   })
-  async getAllPosts(
+  async getPostList(
     @Query() { page = 1, limit = 25 }: PaginationDto,
   ): Promise<PostEntity[]> {
-    return this.postService.getAllPosts({ page, limit });
+    return this.postService.getPostList({ page, limit });
+  }
+
+  @Get([':id'])
+  @UseGuards(PostGuard)
+  @ApiOkResponse({
+    description: 'Get replies to post',
+    type: [GetPostDto],
+  })
+  async getReplies(
+    @GetPost() post: PostEntity,
+    @Query() { page = 1, limit = 25 }: PaginationDto,
+  ): Promise<PostEntity[]> {
+    return this.postService.getReplies(post, { page, limit });
   }
 
   @Delete([':id'])
+  @UseGuards(PostGuard)
   @ApiOkResponse({ description: 'Post deleted' })
   @ApiNotFoundResponse({ description: 'Post not found' })
-  async deletePost(@GetPost() Post: PostEntity): Promise<void> {
-    return this.postService.deletePost(Post);
+  async deletePost(@GetPost() post: PostEntity): Promise<void> {
+    return this.postService.deletePost(post);
   }
 }

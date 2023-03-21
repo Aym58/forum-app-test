@@ -22,6 +22,7 @@ export class UserService {
     const alreadyExists = await this.userRepository.findOne({
       where: { email: email.toLowerCase() },
     });
+    console.log(alreadyExists);
 
     if (alreadyExists) {
       throw new ConflictException(Messages.ALRESDY_EXISTS);

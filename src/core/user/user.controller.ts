@@ -6,6 +6,7 @@ import {
   Delete,
   ValidationPipe,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -20,6 +21,7 @@ import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 import { GetUser } from './decorator/user.decorator';
 import { CreateUserDto, GetUserDto } from './dto/user.dto';
+import { UserGuard } from './guard/user.guard';
 
 @ApiTags('User')
 @Controller('user')
@@ -52,6 +54,7 @@ export class UserController {
   }
 
   @Delete(':id')
+  @UseGuards(UserGuard)
   @ApiOkResponse({ description: 'User deleted' })
   @ApiNotFoundResponse({ description: 'User not found' })
   async deleteUser(@GetUser() user: UserEntity): Promise<void> {
