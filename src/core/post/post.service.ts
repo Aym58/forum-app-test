@@ -12,6 +12,7 @@ import { UserService } from '../user/user.service';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { SortingDto } from '../common/dto/sorting.dto copy';
 import { SortValues } from '../common/enum/sort.enum';
+import { Messages } from './enum/post.enum';
 
 @Injectable()
 export class PostService {
@@ -28,7 +29,7 @@ export class PostService {
       /^(?:[^<]+|<([ai]|code|strong)(\s[a-z]+="[^"]*")*\s*(?:\/>|>[^<>]*<\/\1>))*$/g;
 
     if (!regex.test(text)) {
-      throw new BadRequestException('Tags error');
+      throw new BadRequestException(Messages.TAGS_VIOLATION);
     }
 
     const existingUser = await this.userService.getUserByEmail(email);
@@ -47,9 +48,8 @@ export class PostService {
         where: { id: parentId },
       });
       if (!parentPost) {
-        throw new BadRequestException('Post not found');
+        throw new BadRequestException(Messages.NOT_FOUND);
       }
-
       if (!parentPost.replyIds) parentPost.replyIds = [];
       parentPost.replyIds.push(post.id);
 
@@ -68,7 +68,6 @@ export class PostService {
       const { page, limit } = pagination;
       const take = limit;
       const skip = (page - 1) * limit;
-
       const { sort, order } = sorting;
 
       const postList = await this.postRepository

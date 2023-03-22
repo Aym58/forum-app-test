@@ -36,7 +36,7 @@ export class CreatePostDto {
   })
   homePage?: string;
 
-  @ApiProperty({ example: 10, description: 'Id of commented post' })
+  @ApiProperty({ example: '10 | null', description: 'Id of commented post' })
   parentId?: number;
 
   @ApiProperty({

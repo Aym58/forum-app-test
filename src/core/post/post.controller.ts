@@ -9,12 +9,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiNotFoundResponse,
-} from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 
 import { HttpExceptionFilter } from '../common/exception.filter';
 import { PostEntity } from './post.entity';
@@ -75,7 +70,6 @@ export class PostController {
   @Delete([':id'])
   @UseGuards(PostGuard)
   @ApiOkResponse({ description: 'Post deleted' })
-  @ApiNotFoundResponse({ description: 'Post not found' })
   async deletePost(@GetPost() post: PostEntity): Promise<void> {
     return this.postService.deletePost(post);
   }

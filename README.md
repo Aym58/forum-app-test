@@ -1,6 +1,6 @@
 ## Description
 
-A finance manager API. Built for educational purposes.
+An API implementing comments and replies. Built for educational purposes.
 
 ## Installation
 
@@ -23,5 +23,4 @@ $ docker-compose up --build
 ```bash
  /api/docs
 
- https://aym58.github.io/bank-app-docs
 ```

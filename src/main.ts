@@ -11,7 +11,7 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Codica test task')
+    .setTitle('DZENCode test task')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

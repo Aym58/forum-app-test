@@ -5,10 +5,12 @@ services:
       context: .
       target: development
     environment:
+      - NODE_ENV=dev
       - PORT=3000
-      - DEV_DB_URI=postgres://histcqwn:m8HEixQeeAxwu402G75y7R2Op9Ot-zge@mouse.db.elephantsql.com/histcqwn
+      - DEV_DB_URI=postgres://rujlehga:FVCuYbRM6Rp7aqpKP10qpeV4UW6onjJU@mouse.db.elephantsql.com/rujlehga
       - DB_PORT=5432
-      - DB_USER=postgres
+      - DB_USER=rujlehga
+      - RECAPTCHA_SECRET="s3I6#BK5"
     ports:
       - 3000:3000
     depends_on:

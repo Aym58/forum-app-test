@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
+
 import { OrderValuesType, SortValues, SortValuesType } from '../enum/sort.enum';
 
 export class SortingDto {

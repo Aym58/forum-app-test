@@ -4,18 +4,18 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-
 import { HttpService } from '@nestjs/axios';
+
+import { Messages } from '../enum/post.enum';
 
 @Injectable()
 export class RecaptchaGuard implements CanActivate {
   constructor(private readonly httpService: HttpService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    if (process.env.NODE_ENV === 'dev') return true;
+
     const { body } = context.switchToHttp().getRequest();
-
-    console.log(body);
-
     const { data } = await this.httpService
       .post(
         `https://www.google.com/recaptcha/api/siteverify?response=${body.recaptchaValue}&secret=${process.env.RECAPTCHA_SECRET}`,
@@ -23,7 +23,7 @@ export class RecaptchaGuard implements CanActivate {
       .toPromise();
 
     if (!data.success) {
-      throw new ForbiddenException();
+      throw new ForbiddenException(Messages.CAPTCHA_ERROR);
     }
 
     return true;
